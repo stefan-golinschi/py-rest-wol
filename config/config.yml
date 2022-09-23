@@ -1,0 +1,13 @@
+endpoints:
+  fractal-i7:
+    ethaddr: 24:4B:FE:DF:D0:F6
+    hostname: 127.0.0.1
+    ssh_username: woluser
+    ssh_port: 22
+    enabled: false
+  homeserver:
+    ethaddr: 00:23:24:AE:C2:25
+    hostname: homeserver.lan
+    ssh_username: root
+    ssh_port: 22
+    enabled: true
