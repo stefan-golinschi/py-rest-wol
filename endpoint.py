@@ -11,7 +11,7 @@ class Endpoint:
     def __init__(self, name:str, settings: dict) -> None:
         self.name = name
         self.ssh_port = 22
-        self.ssh_user = 'root'
+        self.ssh_user = "root"
         self.hostname = None
         self.eth_address = None
         self.enabled = True

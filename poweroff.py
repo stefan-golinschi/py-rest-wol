@@ -9,4 +9,4 @@ def poweroff_endpoint(hostname:str, username:str = "root", port:int = 22):
         username=username
     )
 
-    return client.exec_command('systemctl poweroff')
+    return client.exec_command("systemctl poweroff")

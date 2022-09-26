@@ -5,12 +5,12 @@ import ping
 
 
 def create_logger():
-    FORMAT = '[%(levelname)s] %(asctime)s %(filename)s:%(lineno)d %(funcName)s() %(message)s'
+    FORMAT = "[%(levelname)s] %(asctime)s %(filename)s:%(lineno)d %(funcName)s() %(message)s"
     log.basicConfig(format=FORMAT, level=log.DEBUG)
 
 def argument_parser():
-    parser = argparse.ArgumentParser(description='Restful application that provides WOL/suspend/ping services.')
-    parser.add_argument('-c', '--config', type=str, help='path to the config file')
+    parser = argparse.ArgumentParser(description="Restful application that provides WOL/suspend/ping services.")
+    parser.add_argument("-c", "--config", type=str, help="path to the config file")
 
     return parser.parse_args()
 
@@ -41,13 +41,13 @@ def main():
         except yaml.YAMLError as e:
             log.critical(e)
 
-    for item in config['endpoints']:
+    for item in config["endpoints"]:
         endpoint_name = item
-        settings = config['endpoints'][endpoint_name]
+        settings = config["endpoints"][endpoint_name]
         
         ep = Endpoint(endpoint_name, settings)
         ep.pretty_print()
-        if ep.name == 'homeserver':
+        if ep.name == "homeserver":
             ep.wake()
 
 if __name__ == "__main__":

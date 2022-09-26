@@ -9,4 +9,4 @@ def suspend_endpoint(hostname:str, username:str = "root", port:int = 22):
         username=username
     )
 
-    return client.exec_command('systemctl suspend')
+    return client.exec_command("systemctl suspend")
