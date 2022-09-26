@@ -1,14 +1,15 @@
+import logging as log
+
 from config_settings import EndpointSettings
 
 from ping import ping_endpoint
-import logging as log
-
 from suspend import suspend_endpoint
 from poweroff import poweroff_endpoint
 from wake import wake_endpoint
 
+
 class Endpoint:
-    def __init__(self, name:str, settings: dict) -> None:
+    def __init__(self, name: str, settings: dict) -> None:
         self.name = name
         self.ssh_port = 22
         self.ssh_user = "root"
@@ -41,11 +42,13 @@ class Endpoint:
                 self.enabled = bool(settings[item])
 
         if not self.hostname:
-            log.warning(f"Hostname not set for endpoint '{self.name}'. Some features will not be available.")
+            log.warning(
+                f"Hostname not set for endpoint '{self.name}'. Some features will not be available.")
             return False
 
         if not self.eth_address:
-            log.warning(f"Eth Address not set for endpoint '{self.eth_address}'. Some features will not be available.")
+            log.warning(
+                f"Eth Address not set for endpoint '{self.eth_address}'. Some features will not be available.")
             return False
 
         return True
@@ -67,8 +70,9 @@ class Endpoint:
         if not self.hostname:
             log.warning(f"Suspend not available. Hostname is not set.")
             return None
-        
-        log.info(f"Attempting to suspend '{self.ssh_user}@{self.hostname}:{self.ssh_port}'")
+
+        log.info(
+            f"Attempting to suspend '{self.ssh_user}@{self.hostname}:{self.ssh_port}'")
         return suspend_endpoint(hostname=self.hostname, username=self.ssh_user, port=self.ssh_port)
 
     def poweroff(self):
@@ -78,8 +82,9 @@ class Endpoint:
         if not self.hostname:
             log.warning(f"Poweroff not available. Hostname is not set.")
             return None
-        
-        log.info(f"Attempting to poweroff '{self.ssh_user}@{self.hostname}:{self.ssh_port}'")
+
+        log.info(
+            f"Attempting to poweroff '{self.ssh_user}@{self.hostname}:{self.ssh_port}'")
         return poweroff_endpoint(hostname=self.hostname, username=self.ssh_user, port=self.ssh_port)
 
     def wake(self):

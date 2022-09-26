@@ -1,6 +1,7 @@
 import paramiko
 
-def suspend_endpoint(hostname:str, username:str = "root", port:int = 22):
+
+def suspend_endpoint(hostname: str, username: str = "root", port: int = 22):
     client = paramiko.SSHClient()
     client.load_system_host_keys()
     client.connect(
