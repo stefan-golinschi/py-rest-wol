@@ -4,6 +4,7 @@ import yaml
 import os
 
 from endpoint import Endpoint
+from config import valid_config, load_config
 
 
 def create_logger():
@@ -32,17 +33,6 @@ def argument_parser():
     return parser.parse_args()
 
 
-def valid_config(config_file: str) -> bool:
-    import os.path
-
-    if not os.path.exists(config_file):
-        log.critical(f"Config file does not exist '{config_file}'.")
-        return False
-
-    log.info(f"Using config file '{config_file}'.")
-    return True
-
-
 def main():
     create_logger()
 
@@ -52,21 +42,17 @@ def main():
     if not valid_config(config_file):
         exit(1)
 
-    with open(config_file, "r") as stream:
-        try:
-            config = yaml.safe_load(stream)
-        except yaml.YAMLError as e:
-            log.critical(e)
+    config = load_config(config_file)['endpoints']
 
     endpoints = []
-    for item in config["endpoints"]:
-        endpoint_name = item
-        settings = config["endpoints"][endpoint_name]
 
-        ep = Endpoint(endpoint_name, settings)
+    for item in config:
+        settings = item
+
+        ep = Endpoint(settings)
         endpoints.append(ep)
 
-    print(endpoints[0].suspend())
+        print(f"{ep.name}: {ep.ping()}")
 
 
 if __name__ == "__main__":

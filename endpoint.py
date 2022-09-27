@@ -8,8 +8,8 @@ from wake import wake_endpoint
 
 
 class Endpoint:
-    def __init__(self, name: str, settings: dict) -> None:
-        self.name = name
+    def __init__(self, settings: dict) -> None:
+        self.name = None
         self.ssh_port = 22
         self.ssh_user = "root"
         self.hostname = None
@@ -28,6 +28,8 @@ class Endpoint:
 
     def configure(self, settings: dict):
         for item in settings:
+            if item == EndpointSettings.NAME.value:
+                self.name = settings[item]
             if item == EndpointSettings.ETH_ADDRESS.value:
                 self.eth_address = settings[item]
             elif item == EndpointSettings.HOSTNAME.value:
