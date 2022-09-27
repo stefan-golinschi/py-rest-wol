@@ -1,19 +1,32 @@
 import logging as log
 import argparse
 import yaml
+import os
 
 from endpoint import Endpoint
 
 
 def create_logger():
+    log_level = os.getenv('LOG_LEVEL')
+
+    # default level will be info
+    level = log.INFO
+
+    if log_level == "info":
+        level = log.INFO
+    elif log_level == "debug":
+        level = log.DEBUG
+    elif log_level == "warning":
+        level = log.WARNING
+
     FORMAT = "[%(levelname)s] %(asctime)s %(filename)s:%(lineno)d %(funcName)s() %(message)s"
-    log.basicConfig(format=FORMAT, level=log.DEBUG)
+    log.basicConfig(format=FORMAT, level=level)
 
 
 def argument_parser():
     parser = argparse.ArgumentParser(
         description="Restful application that provides WOL/suspend/ping services.")
-    parser.add_argument("-c", "--config", type=str,
+    parser.add_argument("-c", "--config", type=str, required=True,
                         help="path to the config file")
 
     return parser.parse_args()
@@ -45,14 +58,15 @@ def main():
         except yaml.YAMLError as e:
             log.critical(e)
 
+    endpoints = []
     for item in config["endpoints"]:
         endpoint_name = item
         settings = config["endpoints"][endpoint_name]
 
         ep = Endpoint(endpoint_name, settings)
-        ep.pretty_print()
-        if ep.name == "homeserver":
-            ep.wake()
+        endpoints.append(ep)
+
+    print(endpoints[0].suspend())
 
 
 if __name__ == "__main__":

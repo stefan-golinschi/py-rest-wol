@@ -1,7 +1,6 @@
 import logging as log
 
 from config_settings import EndpointSettings
-
 from ping import ping_endpoint
 from suspend import suspend_endpoint
 from poweroff import poweroff_endpoint
@@ -17,8 +16,7 @@ class Endpoint:
         self.eth_address = None
         self.enabled = True
 
-        self.parse_config(settings)
-        pass
+        self.configure(settings)
 
     def pretty_print(self):
         print("Endpoint information")
@@ -28,7 +26,7 @@ class Endpoint:
         print(f"\tETH Address: {self.eth_address}")
         print(f"\tEnabled: {self.enabled}")
 
-    def parse_config(self, settings: dict) -> bool:
+    def configure(self, settings: dict):
         for item in settings:
             if item == EndpointSettings.ETH_ADDRESS.value:
                 self.eth_address = settings[item]
@@ -41,25 +39,12 @@ class Endpoint:
             elif item == EndpointSettings.ENABLED.value:
                 self.enabled = bool(settings[item])
 
-        if not self.hostname:
-            log.warning(
-                f"Hostname not set for endpoint '{self.name}'. Some features will not be available.")
-            return False
-
-        if not self.eth_address:
-            log.warning(
-                f"Eth Address not set for endpoint '{self.eth_address}'. Some features will not be available.")
-            return False
-
-        return True
+        if not self.enabled:
+            log.warning(f"'{self.name}' is configured as disabled.")
 
     def ping(self):
         if not self.enabled:
             return
-
-        if not self.hostname:
-            log.warning(f"Ping not available. Hostname is not set.")
-            return None
 
         return ping_endpoint(self.hostname)
 
@@ -67,33 +52,16 @@ class Endpoint:
         if not self.enabled:
             return
 
-        if not self.hostname:
-            log.warning(f"Suspend not available. Hostname is not set.")
-            return None
-
-        log.info(
-            f"Attempting to suspend '{self.ssh_user}@{self.hostname}:{self.ssh_port}'")
         return suspend_endpoint(hostname=self.hostname, username=self.ssh_user, port=self.ssh_port)
 
     def poweroff(self):
         if not self.enabled:
             return
 
-        if not self.hostname:
-            log.warning(f"Poweroff not available. Hostname is not set.")
-            return None
-
-        log.info(
-            f"Attempting to poweroff '{self.ssh_user}@{self.hostname}:{self.ssh_port}'")
         return poweroff_endpoint(hostname=self.hostname, username=self.ssh_user, port=self.ssh_port)
 
     def wake(self):
         if not self.enabled:
             return
 
-        if not self.eth_address:
-            log.warning(f"Wake not available. Ethaddr is not set.")
-            return None
-
-        log.info(f"Attempting to wake by magic packet '{self.eth_address}'")
         return wake_endpoint(self.eth_address)
