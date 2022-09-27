@@ -1,6 +1,6 @@
 import logging as log
 
-from config_settings import EndpointSettings
+from config import ConfigKeys
 from ping import ping_endpoint
 from suspend import suspend_endpoint
 from poweroff import poweroff_endpoint
@@ -28,17 +28,17 @@ class Endpoint:
 
     def configure(self, settings: dict):
         for item in settings:
-            if item == EndpointSettings.NAME.value:
+            if item == ConfigKeys.NAME.value:
                 self.name = settings[item]
-            if item == EndpointSettings.ETH_ADDRESS.value:
+            if item == ConfigKeys.ETH_ADDRESS.value:
                 self.eth_address = settings[item]
-            elif item == EndpointSettings.HOSTNAME.value:
+            elif item == ConfigKeys.HOSTNAME.value:
                 self.hostname = settings[item]
-            elif item == EndpointSettings.SSH_PORT.value:
-                self.ssh_port = settings[item]
-            elif item == EndpointSettings.SSH_USER.value:
+            elif item == ConfigKeys.SSH_USER.value:
                 self.ssh_user = settings[item]
-            elif item == EndpointSettings.ENABLED.value:
+            elif item == ConfigKeys.SSH_PORT.value:
+                self.ssh_port = settings[item]
+            elif item == ConfigKeys.ENABLED.value:
                 self.enabled = bool(settings[item])
 
         if not self.enabled:

@@ -1,6 +1,16 @@
 import cerberus as cer
 import logging as log
 import yaml
+from enum import Enum
+
+
+class ConfigKeys(Enum):
+    NAME = "name"
+    SSH_PORT = "ssh_port"
+    HOSTNAME = "hostname"
+    SSH_USER = "ssh_username"
+    ETH_ADDRESS = "ethaddr"
+    ENABLED = "enabled"
 
 
 schema = {
@@ -9,41 +19,36 @@ schema = {
         'schema': {
             'type': 'dict',
             'schema': {
-                'name': {
+                ConfigKeys.NAME.value: {
                     'required': True,
                     'type': 'string',
                     'minlength': 3,
                     'maxlength': 32
                 },
-                'ethaddr': {
+                ConfigKeys.ETH_ADDRESS.value: {
                     'required': True,
                     'type': 'string',
                     'minlength': 17,
                     'maxlength': 17,
                     'regex': '[0-9a-fA-F]{2}([-:]?)[0-9a-fA-F]{2}(\\1[0-9a-fA-F]{2}){4}$'
                 },
-                'hostname': {
+                ConfigKeys.HOSTNAME.value: {
                     'required': True,
                     'type': 'string',
                 },
-                'ssh_username': {
+                ConfigKeys.SSH_USER.value: {
                     'required': False,
                     'type': 'string',
                     'default': 'root'
                 },
-                'ssh_username': {
-                    'required': False,
-                    'type': 'string',
-                    'default': 'root'
-                },
-                'ssh_port': {
+                ConfigKeys.SSH_PORT.value: {
                     'required': False,
                     'type': 'number',
                     'min': 1,
                     'max': 65535,
                     'default': 22
                 },
-                'enabled': {
+                ConfigKeys.ENABLED.value: {
                     'required': False,
                     'type': 'boolean',
                     'default': True
