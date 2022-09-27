@@ -5,6 +5,7 @@ import socket
 
 def poweroff_endpoint(hostname: str, username: str = "root", port: int = 22) -> bool:
     """Returns True if the poweroff command can be executed via SSH on the remote host."""
+    stderr = None
     try:
         client = paramiko.SSHClient()
         client.load_system_host_keys()
@@ -31,10 +32,11 @@ def poweroff_endpoint(hostname: str, username: str = "root", port: int = 22) -> 
         log.critical(
             f"Unhandled exception when attempting to exec commands on remote host '{username}@{hostname}:{port}'")
 
-    error = stderr.readlines()
-    if error:
-        error = error[0].strip()
-        log.warning(f"Cannot exec command. Reason: '{error}'")
-        return False
+    if stderr:
+        error = stderr.readlines()
+        if error:
+            error = error[0].strip()
+            log.warning(f"Cannot exec command. Reason: '{error}'")
+            return False
 
     return True
