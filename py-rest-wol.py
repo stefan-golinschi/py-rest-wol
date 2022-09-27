@@ -10,8 +10,8 @@ from config import valid_config, load_config
 def create_logger():
     log_level = os.getenv('LOG_LEVEL')
 
-    # default level will be info
-    level = log.INFO
+    if not log_level:
+        log_level = "info"
 
     if log_level == "info":
         level = log.INFO
@@ -22,6 +22,8 @@ def create_logger():
 
     FORMAT = "[%(levelname)s] %(asctime)s %(filename)s:%(lineno)d %(funcName)s() %(message)s"
     log.basicConfig(format=FORMAT, level=level)
+
+    log.info(f"Log level is set to '{log_level}'")
 
 
 def argument_parser():
