@@ -46,7 +46,7 @@ class Endpoint:
 
     def ping(self):
         if not self.enabled:
-            return
+            return None
 
         log.info(
             f"Trying to ping '{self.name}', '{self.ssh_user}@{self.hostname}:{self.ssh_port}'")
@@ -54,7 +54,7 @@ class Endpoint:
 
     def suspend(self):
         if not self.enabled:
-            return
+            return None
 
         log.info(
             f"Trying to suspend '{self.name}', '{self.ssh_user}@{self.hostname}:{self.ssh_port}'")
@@ -62,7 +62,7 @@ class Endpoint:
 
     def poweroff(self):
         if not self.enabled:
-            return
+            return None
 
         log.info(
             f"Trying to poweroff '{self.name}', '{self.ssh_user}@{self.hostname}:{self.ssh_port}'")
@@ -70,7 +70,7 @@ class Endpoint:
 
     def wake(self):
         if not self.enabled:
-            return
+            return None
 
         log.info(
             f"Trying to wake '{self.name}', ethaddr: {self.eth_address}")
