@@ -1,6 +1,7 @@
 import paramiko
 import logging as log
 import socket
+from config import ssh_private_key_location, ssh_known_hosts_location
 
 
 def suspend_endpoint(hostname: str, username: str = "root", port: int = 22):
@@ -8,13 +9,16 @@ def suspend_endpoint(hostname: str, username: str = "root", port: int = 22):
     stderr = None
     try:
         client = paramiko.SSHClient()
-        client.load_system_host_keys()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        client.load_host_keys(ssh_known_hosts_location)
         client.connect(
             hostname=hostname,
             port=port,
-            username=username
+            username=username,
+            key_filename=ssh_private_key_location
         )
-        stdin, stdout, stderr = client.exec_command("systemctl suspend")
+        stdin, stdout, stderr = client.exec_command(
+            "sudo systemctl suspend")
 
     except paramiko.ssh_exception.AuthenticationException as e:
         log.critical(e)
@@ -28,9 +32,6 @@ def suspend_endpoint(hostname: str, username: str = "root", port: int = 22):
         log.critical(e)
     except socket.gaierror as e:
         log.critical(f"{e.strerror} '{hostname}'.")
-    except:
-        log.critical(
-            f"Unhandled exception when attempting to exec commands on remote host '{username}@{hostname}:{port}'")
 
     if stderr:
         error = stderr.readlines()

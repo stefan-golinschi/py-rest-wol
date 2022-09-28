@@ -13,6 +13,9 @@ class ConfigKeys(Enum):
     ENABLED = "enabled"
 
 
+ssh_private_key_location = "/ssh/id_rsa"
+ssh_known_hosts_location = "/ssh/known_hosts"
+
 schema = {
     'endpoints': {
         'type': 'list',
