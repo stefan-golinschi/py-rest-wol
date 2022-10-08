@@ -11,7 +11,6 @@ class RemoteCmd:
 
         self._ssh_private_key_location = "/ssh/id_rsa"
         self._ssh_known_hosts_location = "/ssh/known_hosts"
-        self.__connect()
 
     def __connect(self):
         try:
@@ -25,26 +24,28 @@ class RemoteCmd:
                 key_filename=self._ssh_private_key_location
             )
         except paramiko.ssh_exception.AuthenticationException as e:
-            log.critical(e)
+            raise e
         except paramiko.ssh_exception.NoValidConnectionsError as e:
-            log.critical(e)
+            raise e
         except paramiko.ssh_exception.BadHostKeyException as e:
-            log.critical(e)
+            raise e
         except paramiko.ssh_exception.ChannelException as e:
-            log.critical(e)
+            raise e
         except paramiko.ssh_exception.IncompatiblePeer as e:
-            log.critical(e)
+            raise e
         except socket.gaierror as e:
-            log.critical(f"{e.strerror} '{self.hostname}'.")
+            raise e
 
     def suspend(self):
         stderr = None
 
         try:
+            self.__connect()
             stdin, stdout, stderr = self.client.exec_command(
                 "sudo systemctl suspend")
-        except:
-            log.critical("Cannot suspend.")
+        except Exception as e:
+            log.critical(f"Cannot suspend. Reason: {e}")
+            return False
 
         if stderr:
             error = stderr.readlines()
@@ -52,16 +53,19 @@ class RemoteCmd:
                 error = error[0].strip()
                 log.warning(f"Reason: '{error}'")
                 return False
+
         return True
 
     def poweroff(self):
         stderr = None
 
         try:
+            self.__connect()
             stdin, stdout, stderr = self.client.exec_command(
                 "sudo systemctl poweroff")
         except:
             log.critical("Cannot poweroff.")
+            return False
 
         if stderr:
             error = stderr.readlines()
