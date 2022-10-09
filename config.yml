@@ -1,15 +1,7 @@
 endpoints:
-  - name: home-pc
-    ethaddr: aa:bb:cc:dd:ee:ff
-    hostname: thinkpad-t460
-    ssh_username: stefangolinschi
-    ssh_port: 22
-    enabled: true
-
-  - name: fractal-i2
+  - name: workstation
     ethaddr: 00:11:22:33:44:55
-    hostname: xsvm.eu
+    hostname: workstation.lan
     ssh_username: root
     ssh_port: 22
     enabled: true
-  
