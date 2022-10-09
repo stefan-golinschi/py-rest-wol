@@ -70,12 +70,12 @@ endpoints:
 
 |     Key       | Required |     Type      | Default value |
 | ------------  | -------- | ------------- | ------------- |
-| `name`        | **yes**  |    **N/A**    |   **string**  |
-| `ethaddr`     | **yes**  |    **N/A**    |   **string**  | 
-| `hostname`    | **yes**  |    **N/A**    |   **string**  |
-| `ssh_hostname`|   no     |      root     |     string    |
-| `ssh_port`    |   no     |      22       |      int      |
-| `enabled`     |   no     |      N/A      |     boolean   |
+| `name`        | **yes**  |   **string**  |    **N/A**    |
+| `ethaddr`     | **yes**  |   **string**  |    **N/A**    | 
+| `hostname`    | **yes**  |   **string**  |    **N/A**    |
+| `ssh_hostname`|   no     |     string    |     root      |
+| `ssh_port`    |   no     |      int      |      22       |
+| `enabled`     |   no     |    boolean    |      N/A      |
 
 
 ### Environment variables
