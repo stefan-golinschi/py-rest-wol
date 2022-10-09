@@ -125,3 +125,46 @@ The possible return values are as follows:
 | `wake`     | true    | `Tried to wake`       |
 |            | false   | `down`                |
 |            | null    | `Endpoint not found`  |
+
+## Container 
+
+To run this application as container, you can use the container image that is published in the Packages section of this page: https://github.com/stefan-golinschi/py-rest-wol/pkgs/container/py-rest-wol
+
+### Docker compose
+
+Here's a simple example on how to use `py-rest-wol` container image inside a docker compose file.
+
+```
+  py-rest-wol:
+    image: ghcr.io/stefan-golinschi/py-rest-wol:latest
+    container_name: py-rest-wol
+    environment:
+      - LOG_LEVEL=info
+      - LISTEN_ADDRESS=0.0.0.0
+      - LISTEN_PORT=8088
+    volumes:
+      - configuration.yaml:/app/configuration.yaml:ro
+      - ./py-rest-wol/data/ssh:/ssh:ro
+    network_mode: host
+    command:
+      - '--config=/app/configuration.yaml'
+    restart: always
+```
+
+## Home Assistant
+
+You can use this application as a Home Assistant command_line switch. You can do this if you create a `switch` entry inside HA's `configuration.yaml` like this:
+
+```
+switch:
+  - platform: command_line
+    switches:
+      workstation:
+        command_on: 'curl -X GET http://<app hostname>:8088/wake/workstation'
+        command_off: 'curl -X GET http://<app hostname>:8088/suspend/workstation'
+        command_state: 'curl -X GET http://<app hostname>:8088/ping/workstation'
+        value_template: "{{ value_json.message == 'up' }}"
+
+```
+
+Just replace `app hostname` with the hostname or IP address of the `py-rest-wol` instance.
