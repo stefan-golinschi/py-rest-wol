@@ -2,6 +2,8 @@
 
 This is a simple python application that is able to ping/suspend/poweroff/wake devices. This is useful especially in a setup where you have a workstation that needs to be started and stopped remotely.
 
+The name of this project is inspired from @daBONDi's `go-rest-wol` repo(https://github.com/daBONDi/go-rest-wol) , which I originally used.
+
 
 ## Generate SSH keys
 
