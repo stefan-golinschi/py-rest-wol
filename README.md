@@ -165,7 +165,7 @@ switch:
         command_on: 'curl -X GET http://<app hostname>:8088/wake/workstation'
         command_off: 'curl -X GET http://<app hostname>:8088/suspend/workstation'
         command_state: 'curl -X GET http://<app hostname>:8088/ping/workstation'
-        value_template: "{{ value_json.message == 'up' }}"
+        value_template: '{{ value_json.message == "up" }}'
 
 ```
 
