@@ -36,7 +36,7 @@ echo "readonly PATH=$HOME/programs" >> ~woluser/.bash_profile
 echo "export PATH" >> ~woluser/.bash_profile
 
 mkdir ~woluser/programs
-ln -s /usr/bin/sudo ~/programs/sudo
+ln -s /usr/bin/sudo ~woluser/programs/sudo
 ```
 
 After this, add this line in your sudoers file using `visudo`:
